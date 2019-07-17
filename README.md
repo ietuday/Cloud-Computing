@@ -110,3 +110,5 @@ Similarly, Docker Inc., the company behind Docker, offers its own container orch
 
 If anyone was nervous about adopting Kubernetes for their Docker-based product, that last point should relieve any doubts. Both projects have wholeheartedly embraced each other and have benefited tremendously from this symbiosis.
 
+[AWS Free Account Fearures](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc)
+
