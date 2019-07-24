@@ -204,9 +204,80 @@ Route table does it by specifying the destination IP address in it and the targe
 
 Each subnet has to be attached with at least one route table but a Route table can be attached with any no of subnets.
 
+
+### Q. How do I get started with Amazon VPC?
+ 
+Your AWS resources are automatically provisioned in a ready-to-use default VPC. You can choose to create additional VPCs by going to the Amazon VPC page in the AWS Management Console and selecting "Start VPC Wizard".
+ 
+You’ll be presented with four basic options for network architectures. After selecting an option, you can modify the size and IP address range of the VPC and its subnets. If you select an option with Hardware VPN Access, you will need to specify the IP address of the VPN hardware on your network. You can modify the VPC to add or remove secondary IP ranges and gateways, or add more subnets to IP ranges.
+ 
+The four options are:
+Amazon VPC with a single public subnet only
+Amazon VPC with public and private subnets
+Amazon VPC with public and private subnets and AWS Site-to-Site VPN access
+Amazon VPC with a private subnet only and AWS Site-to-Site VPN access
+
+#### Q. What are the different types of VPC endpoints available on Amazon VPC?
+ 
+VPC endpoints enable you to privately connect your VPC to services hosted on AWS without requiring an Internet gateway, a NAT device, VPN, or firewall proxies. Endpoints are horizontally scalable and highly available virtual devices that allow communication between instances in your VPC and AWS services. Amazon VPC offers two different types of endpoints: gateway type endpoints and interface type endpoints.
+ 
+Gateway type endpoints are available only for AWS services including S3 and DynamoDB. These endpoints will add an entry to your route table you selected and route the traffic to the supported services through Amazon’s private network.
+ 
+Interface type endpoints provide private connectivity to services powered by PrivateLink, being AWS services, your own services or SaaS solutions, and supports connectivity over Direct Connect. More AWS and SaaS solutions will be supported by these endpoints in the future. Please refer to VPC Pricing for the price of interface type endpoints.
+
+#### Q. How will I be charged and billed for my use of Amazon VPC?
+
+There are no additional charges for creating and using the VPC itself. Usage charges for other Amazon Web Services, including Amazon EC2, still apply at published rates for those resources, including data transfer charges. If you connect your VPC to your corporate datacenter using the optional hardware VPN connection, pricing is per VPN connection-hour (the amount of time you have a VPN connection in the "available" state.) Partial hours are billed as full hours. Data transferred over VPN connections will be charged at standard AWS Data Transfer rates. For VPC-VPN pricing information, please visit the pricing section of the Amazon VPC product page.
+
+#### Q. What usage charges will I incur if I use other AWS services, such as Amazon S3, from Amazon EC2 instances in my VPC?
+
+Usage charges for other Amazon Web Services, including Amazon EC2, still apply at published rates for those resources. Data transfer charges are not incurred when accessing Amazon Web Services, such as Amazon S3, via your VPC’s Internet gateway.
+
+If you access AWS resources via your VPN connection, you will incur Internet data transfer charges.
+
+#### Q: Do your prices include taxes?
+
+Except as otherwise noted, our prices are exclusive of applicable taxes and duties, including VAT and applicable sales tax. For customers with a Japanese billing address, use of AWS services is subject to Japanese Consumption Tax
+
+#### Q. What are the connectivity options for my Amazon VPC?
+
+You may connect your Amazon VPC to:
+
+The internet (via an internet gateway)
+Your corporate data center using an AWS Site-to-Site VPN connection (via the virtual private gateway)
+Both the internet and your corporate data center (utilizing both an internet gateway and a virtual private gateway)
+Other AWS services (via internet gateway, NAT, virtual private gateway, or VPC endpoints)
+Other Amazon VPCs (via VPC peering connections)
+
+
+#### Q. How do I connect my VPC to the Internet?
+ 
+Amazon VPC supports the creation of an Internet gateway. This gateway enables Amazon EC2 instances in the VPC to directly access the Internet.
+
+#### Q. Are there any bandwidth limitations for Internet gateways? Do I need to be concerned about its availability? Can it be a single point of failure?
+ 
+No. An Internet gateway is horizontally-scaled, redundant, and highly available. It imposes no bandwidth constraints.
+
+
+#### What is the purpose of Elastic IP?
+
+Elastic IP addresses are used by AWS to manage its dynamic cloud computing services. Within the AWS infrastructure, customers have virtual private clouds (VPCs). Within the VPCs, users have instances. The Elastic IP address is what is used to advertise the data within the instance to the public internet.
+
+
+Elastic IP address is a public static IPv4 address which is reachable from the Internet. Basically Elastic IP addresses are used by AWS to manage its dynamic cloud computing services. Within the AWS infrastructure, customers have virtual private clouds (VPC), within the VPCs, users have instances. So when you launch an EC2 instance, you receive a Public IP address by which that instance is reachable from internet. Once you stop that instance and restart the instance you get a new Public IP for the same instance. So it's basically a problem to connect your instance from internet for not having a static IP. To overcome this problem, we attach an Elastic IP to an Instance which doesn't change after you stop / start the instance.
+
+In short Elastic IP is a permanent IP for your instance.
+
+
+
 ### IMP Links
 
 [AWS Free Account Fearures](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc)
+
+
+[Elastic IP, Static IP, Public IP. What’s the Difference?](https://medium.com/@datapath_io/elastic-ip-static-ip-public-ip-whats-the-difference-8e36ac92b8e7)
+
+
 
 
 ### Screenshots
