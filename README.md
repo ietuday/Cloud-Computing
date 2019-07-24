@@ -212,3 +212,5 @@ Each subnet has to be attached with at least one route table but a Route table c
 ### Screenshots
 
 ![VPC 1](./Screenshots/VPC1.png?raw=true "Optional Title")
+
+![VPC 2](./Screenshots/VPC2.png?raw=true "Optional Title")
