@@ -110,5 +110,105 @@ Similarly, Docker Inc., the company behind Docker, offers its own container orch
 
 If anyone was nervous about adopting Kubernetes for their Docker-based product, that last point should relieve any doubts. Both projects have wholeheartedly embraced each other and have benefited tremendously from this symbiosis.
 
+
+### Multi-factor Authentication(MFA)
+
+AWS Multi-Factor Authentication (MFA) is a simple best practice that adds an extra layer of protection on top of your user name and password. With MFA enabled, when a user signs in to an AWS website, they will be prompted for their user name and password (the first factor—what they know), as well as for an authentication code from their AWS MFA device (the second factor—what they have). Taken together, these multiple factors provide increased security for your AWS account settings and resources.
+
+You can enable MFA for your AWS account and for individual IAM users you have created under your account. MFA can be also be used to control access to AWS service APIs.
+
+After you've obtained a supported hardware or virtual MFA device, AWS does not charge any additional fees for using MFA.
+
+You can also protect cross-account access using MFA.
+
+
+### VPC (Virtual Private Cloud)
+
+#### Q. What is Amazon Virtual Private Cloud?
+
+Amazon VPC lets you provision a logically isolated section of the Amazon Web Services (AWS) cloud where you can launch AWS resources in a virtual network that you define. You have complete control over your virtual networking environment, including selection of your own IP address ranges, creation of subnets, and configuration of route tables and network gateways. You can also create a hardware Virtual Private Network (VPN) connection between your corporate datacenter and your VPC and leverage the AWS cloud as an extension of your corporate datacenter.
+
+You can easily customize the network configuration for your Amazon VPC. For example, you can create a public-facing subnet for your web servers that have access to the Internet, and place your backend systems such as databases or application servers in a private-facing subnet with no Internet access. You can leverage multiple layers of security, including security groups and network access control lists, to help control access to Amazon EC2 instances in each subnet.
+
+#### Q. What are the components of Amazon VPC?
+
+Amazon VPC comprises a variety of objects that will be familiar to customers with existing networks:
+
+A Virtual Private Cloud: A logically isolated virtual network in the AWS cloud. You define a VPC’s IP address space from ranges you select.
+
+Subnet: A segment of a VPC’s IP address range where you can place groups of isolated resources.
+
+Internet Gateway: The Amazon VPC side of a connection to the public Internet.
+
+NAT Gateway: A highly available, managed Network Address Translation (NAT) service for your resources in a private subnet to access the Internet.
+
+Virtual private gateway: The Amazon VPC side of a VPN connection.
+
+Peering Connection: A peering connection enables you to route traffic via private IP addresses between two peered VPCs.
+
+VPC Endpoints: Enables private connectivity to services hosted in AWS, from within your VPC without using an Internet Gateway, VPN, Network Address Translation (NAT) devices, or firewall proxies.
+
+Egress-only Internet Gateway: A stateful gateway to provide egress only access for IPv6 traffic from the VPC to the Internet.
+
+#### Q: Why should I use Amazon VPC?
+ 
+Amazon VPC enables you to build a virtual network in the AWS cloud - no VPNs, hardware, or physical datacenters required. You can define your own network space, and control how your network and the Amazon EC2 resources inside your network are exposed to the Internet. You can also leverage the enhanced security options in Amazon VPC to provide more granular access to and from the Amazon EC2 instances in your virtual network.
+
+#### What is the relation between an AWS VPC subnet and a route table?
+
+VPCs - A VPC is a logical boundary within AWS’ public cloud - one that provides YOU private access. How many VPCs you need is dictated by the number of environments - for e.g. Your may want a PROD VPC for all your production instances and a STAGING VPC for your staging environment.. Of course, there are many other ways to do your VPC layout, this is a just a common example. Sometimes, a ‘Management’ VPC that contains all the bastion hosts etc. is added - and all your other VPCs (Prod, Staging) are peered with the management VPC. Typically, VPCs cannot talk to each other unless they have been ‘peered’.
+
+Subnets - Whereas VPC layout is based on environment, Subnets are usually dictated by the type of workload. In a standard 3 tier app, your web tier would be in its own subnet (called WEB), your app would be in another Subnet (called APP) and your data would sit in the DATA subnet. These subnets are defined by YOU , the admin account owner of the AWS dashboard. How many IP addresses and what block (CIDR block) you provide per subnet is also something you get to decide (e.g. /16 subnet gets you 65536 IP addresses and /28 gets you 16 IPs).
+
+You HAVE to get this right upfront - no way to add or remove IP addresses once a subnet is created
+
+A subnet can be either Public or private.. The only difference is that a public subnet has an internet gateway associated with it. A private one does not - and needs a NAT instance to get out to the internet.
+
+In our workload example above, you would want your WEB subnet to be a PUBLIC subnet and your APP and DATA subnets to be private.
+
+Route Tables - If you stick to default VPCs and default Subnets, you already have routes from each instance in the subnet to a) Other instances in the same subnet b) to the internet (for a Public Subnet).
+
+It is only when you move away from default VPCs - and create your own VPC that you really need to start thinking about routes. In that case, you would need to create a route for each EC2 instance (in public subnet) to get out to the internet. You would only do this ONCE - by creating a ROUTE TABLE - and assigning each EC2 instance to this route table.
+
+You can, obviously create more convoluted routes, for e.g. - from a Private EC2 instance in APP subnet to a private EC2 instance in the DATA subnet.
+
+##### To put it simple:
+
+Each VPC has a main route table. There is a default one, which can be modified or replaced with a custom route table.
+
+Each subnet must be associated with a route table. It can be an explicitly specified custom route table, or if you don’t do that, the subnet uses the VPC’s main route table.
+
+Route table controls the subnet’s traffic. AWS has 3 types of subnets:
+
+Public subnet: the route table directs traffic to IGW (Internet Gateway) for Internet access.
+
+Private subnet: the router table does not direct traffic to IGW and therefore no Internet access.
+
+VPN-only subnet: the route table directs traffic to VPG (VPN Gateway) for VPN access, but not to IGW.
+
+
+### Before 
+starting with the VPC subnet we must first know what is a VPC. VPC is a virtual private network provided by the AWS to create your network to isolate your resources from others. VPC is a region specific services. Your network would be identified with the help of the IP address.
+
+VPC subnet is the component which divides the network into smaller networks that is it divides the IP address into small portion to use it in its availability zones.
+
+There are two types of subnet namely private and public subnets.
+
+The public subnets are the subnets which face the internet, that is the resources like your application is placed inside this subnet.
+
+The private subnets are the subnets which are not reachable through the internet, that is more secure resources are placed on this subnet such as database, backups, etc.
+
+Route Table is the VPC component which helps to classify the subnet as private or public by specifying the traffic that has to be directed to each subnet.
+
+Route table does it by specifying the destination IP address in it and the target that has to be reached if the traffic arises for the destination address.
+
+Each subnet has to be attached with at least one route table but a Route table can be attached with any no of subnets.
+
+### IMP Links
+
 [AWS Free Account Fearures](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc)
 
+
+### Screenshots
+
+![VPC 1](./Screenshots/VPC1.png?raw=true "Optional Title")
