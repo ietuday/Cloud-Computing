@@ -268,7 +268,17 @@ Elastic IP address is a public static IPv4 address which is reachable from the I
 
 In short Elastic IP is a permanent IP for your instance.
 
+#### Q. How do instances in a VPC access the Internet?
+ 
+You can use public IP addresses, including Elastic IP addresses (EIPs), to give instances in the VPC the ability to both directly communicate outbound to the Internet and to receive unsolicited inbound traffic from the Internet (e.g., web servers). You can also use the solutions in the next question.
 
+#### Q. How do instances without public IP addresses access the Internet
+ 
+Instances without public IP addresses can access the Internet in one of two ways:
+
+Instances without public IP addresses can route their traffic through a NAT gateway or a NAT instance to access the Internet. These instances use the public IP address of the NAT gateway or NAT instance to traverse the Internet. The NAT gateway or NAT instance allows outbound communication but doesn’t allow machines on the Internet to initiate a connection to the privately addressed instances.
+
+For VPCs with a hardware VPN connection or Direct Connect connection, instances can route their Internet traffic down the virtual private gateway to your existing datacenter. From there, it can access the Internet via your existing egress points and network security/monitoring devices.
 
 ### IMP Links
 
