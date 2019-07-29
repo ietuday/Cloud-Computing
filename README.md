@@ -491,6 +491,332 @@ Yes, you may use Amazon EBS snapshots if they are located in the same region as 
 Yes, however, an instance launched in a VPC using an Amazon EBS-backed AMI maintains the same IP address when stopped and restarted. This is in contrast to similar instances launched outside a VPC, which get a new IP address. The IP addresses for any stopped instances in a subnet are considered unavailable.
 
 
+#### Q. Can I use Amazon EC2 Reserved Instances with Amazon VPC?
+
+Yes. You can reserve an instance in Amazon VPC when you purchase Reserved Instances. When computing your bill, AWS does not distinguish whether your instance runs in Amazon VPC or standard Amazon EC2. AWS automatically optimizes which instances are charged at the lower Reserved Instance rate to ensure you always pay the lowest amount. However, your instance reservation will be specific to Amazon VPC. Please see the Reserved Instances page for further details.
+
+#### Q. Can I employ Amazon CloudWatch within Amazon VPC?
+
+Yes.
+
+#### Q. Can I employ Auto Scaling within Amazon VPC?
+
+Yes. 
+
+#### Q. Can I launch Amazon EC2 Cluster Instances in a VPC?
+
+Yes. Cluster instances are supported in Amazon VPC, however, not all instance types are available in all regions and Availability Zones.
+
+#### Q. What is a default VPC?
+
+A default VPC is a logically isolated virtual network in the AWS cloud that is automatically created for your AWS account the first time you provision Amazon EC2 resources. When you launch an instance without specifying a subnet-ID, your instance will be launched in your default VPC.
+
+
+#### Q. What are the benefits of a default VPC?
+
+When you launch resources in a default VPC, you can benefit from the advanced networking functionalities of Amazon VPC (EC2-VPC) with the ease of use of Amazon EC2 (EC2-Classic). You can enjoy features such as changing security group membership on the fly, security group egress filtering, multiple IP addresses, and multiple network interfaces without having to explicitly create a VPC and launch instances in the VPC.
+
+#### Q. What accounts are enabled for default VPC?
+
+If your AWS account was created after March 18, 2013 your account may be able to launch resources in a default VPC. See this Forum Announcement to determine which regions have been enabled for the default VPC feature set. Also, accounts created prior to the listed dates may utilize default VPCs in any default VPC enabled region in which you’ve not previously launched EC2 instances or provisioned Amazon Elastic Load Balancing, Amazon RDS, Amazon ElastiCache, or Amazon Redshift resources.
+
+#### Q. How can I tell if my account is configured to use a default VPC?
+
+The Amazon EC2 console indicates which platforms you can launch instances in for the selected region, and whether you have a default VPC in that region. Verify that the region you'll use is selected in the navigation bar. On the Amazon EC2 console dashboard, look for "Supported Platforms" under "Account Attributes". If there are two values, EC2-Classic and EC2-VPC, you can launch instances into either platform. If there is one value, EC2-VPC, you can launch instances only into EC2-VPC. Your default VPC ID will be listed under "Account Attributes" if your account is configured to use a default VPC. You can also use the EC2 DescribeAccountAttributes API or CLI to describe your supported platforms.
+
+#### Q. Will I need to know anything about Amazon VPC in order to use a default VPC?
+
+No. You can use the AWS Management Console, AWS EC2 CLI, or the Amazon EC2 API to launch and manage EC2 instances and other AWS resources in a default VPC. AWS will automatically create a default VPC for you and will create a default subnet in each Availability Zone in the AWS region. Your default VPC will be connected to an Internet gateway and your instances will automatically receive public IP addresses, just like EC2-Classic.
+
+#### Q. Do I need to have a VPN connection to use a default VPC?
+
+No. Default VPCs are attached to the Internet and all instances launched in default subnets in the default VPC automatically receive public IP addresses. You can add a VPN connection to your default VPC if you choose.
+
+#### Q. Can I create other VPCs and use them in addition to my default VPC?
+
+Yes. To launch an instance into nondefault VPCs you must specify a subnet-ID during instance launch.
+
+#### Q. Can I create additional subnets in my default VPC, such as private subnets?
+
+Yes. To launch into nondefault subnets, you can target your launches using the console or the --subnet option from the CLI, API, or SDK.
+
+#### Q. How many default VPCs can I have?
+
+You can have one default VPC in each AWS region where your Supported Platforms attribute is set to "EC2-VPC".
+
+#### Q. What is the IP range of a default VPC?
+
+The default VPC CIDR is 172.31.0.0/16. Default subnets use /20 CIDRs within the default VPC CIDR.
+
+#### Q. How many default subnets are in a default VPC?
+
+One default subnet is created for each Availability Zone in your default VPC.
+
+#### Q. Can I delete a default VPC?
+
+Yes, you can delete a default VPC. Once deleted, you can create a new default VPC directly from the VPC Console or by using the CLI. This will create a new default VPC in the region. This does not restore the previous VPC that was deleted.
+
+#### Q. Can I delete a default subnet?
+
+Yes, you can delete a default subnet. Once deleted, you can create a new default subnet in the availability zone by using the CLI or SDK. This will create a new default subnet in the availability zone specified. This does not restore the previous subnet that was deleted.
+
+#### Q. I have an existing EC2-Classic account. Can I get a default VPC?
+
+The simplest way to get a default VPC is to create a new account in a region that is enabled for default VPCs, or use an existing account in a region you've never been to before, as long as the Supported Platforms attribute for that account in that region is set to "EC2-VPC".
+
+#### Q. I really want a default VPC for my existing EC2 account. Is that possible?
+
+Yes, however, we can only enable an existing account for a default VPC if you have no EC2-Classic resources for that account in that region. Additionally, you must terminate all non-VPC provisioned Elastic Load Balancers, Amazon RDS, Amazon ElastiCache, and Amazon Redshift resources in that region. After your account has been configured for a default VPC, all future resource launches, including instances launched via Auto Scaling, will be placed in your default VPC. To request your existing account be setup with a default VPC, please go to Account and Billing -> Service: Account -> Category: Convert EC2 Classic to VPC and raise a request. We will review your request, your existing AWS services and EC2-Classic presence and guide you through the next steps.
+
+#### Q. How are IAM accounts impacted by default VPC?
+
+If your AWS account has a default VPC, any IAM accounts associated with your AWS account use the same default VPC as your AWS account.
+
+#### Q. Can I attach or detach one or more network interfaces to an EC2 instance while it’s running?
+
+Yes
+
+#### Q. Can I have more than two network interfaces attached to my EC2 instance?
+
+The total number of network interfaces that can be attached to an EC2 instance depends on the instance type. See the EC2 User Guide for more information on the number of allowed network interfaces per instance type
+
+
+#### Q. Can I attach a network interface in one Availability Zone to an instance in another Availability Zone?
+
+Network interfaces can only be attached to instances residing in the same Availability Zone.
+
+#### Q. Can I attach a network interface in one VPC to an instance in another VPC?
+
+Network interfaces can only be attached to instances in the same VPC as the interface.
+
+#### Q. Can I use Elastic Network Interfaces as a way to host multiple websites requiring separate IP addresses on a single instance?
+
+Yes, however, this is not a use case best suited for multiple interfaces. Instead, assign additional private IP addresses to the instance and then associate EIPs to the private IPs as needed.
+
+#### Q. Will I get charged for an Elastic IP Address that is associated to a network interface but the network interface isn’t attached to a running instance?
+
+Yes
+
+#### Q. Can I detach the primary interface (eth0) on my EC2 instance?
+
+No. You can attach and detach secondary interfaces (eth1-ethn) on an EC2 instance, but you can’t detach the eth0 interface.
+
+#### Q. Can I create a peering connection to a VPC in a different region?
+
+Yes. Peering connections can be created with VPCs in different regions. Inter-region VPC peering is available globally in all commercial regions (excluding China).
+
+#### Q. Can I peer my VPC with a VPC belonging to another AWS account?
+
+Yes, assuming the owner of the other VPC accepts your peering connection reque
+
+#### Q. Can I peer two VPCs with matching IP address ranges?
+
+No. Peered VPCs must have non-overlapping IP ranges.
+
+#### Q. How much do VPC peering connections cost?
+
+There is no charge for creating VPC peering connections, however, data transfer across peering connections is charged. See the Data Transfer section of the EC2 Pricing page for data transfer rates.
+
+#### Q. Can I use AWS Direct Connect or hardware VPN connections to access VPCs I’m peered with?
+
+No. “Edge to Edge routing” isn’t supported in Amazon VPC. Refer to the VPC Peering Guide for additional information.
+
+#### Q. Do I need an Internet Gateway to use peering connections?
+
+No. VPC peering connections do not require an Internet Gateway.
+
+#### Q. Is VPC peering traffic within the region encrypted?
+
+No. Traffic between instances in peered VPCs remains private and isolated – similar to how traffic between two instances in the same VPC is private and isolated.
+
+#### Q. If I delete my side of a peering connection, will the other side still have access to my VPC?
+
+No. Either side of the peering connection can terminate the peering connection at any time. Terminating a peering connection means traffic won’t flow between the two VPCs.
+
+#### Q. If I peer VPC A to VPC B and I peer VPC B to VPC C, does that mean VPCs A and C are peered?
+
+No. Transitive peering relationships are not supported.
+
+#### Q. What if my peering connection goes down?
+
+AWS uses the existing infrastructure of a VPC to create a VPC peering connection; it is neither a gateway nor a VPN connection, and does not rely on a separate piece of physical hardware. There is no single point of failure for communication or a bandwidth bottleneck.
+
+Inter-Region VPC Peering operates on the same horizontally scaled, redundant, and highly available technology that powers VPC today. Inter-Region VPC Peering traffic goes over the AWS backbone that has in-built redundancy and dynamic bandwidth allocation. There is no single point of failure for communication.
+
+If an Inter-Region peering connection does go down, the traffic will not be routed over the internet.
+
+#### Q. Are there any bandwidth limitations for peering connections?
+
+Bandwidth between instances in peered VPCs is no different than bandwidth between instances in the same VPC. Note: A placement group can span peered VPCs; however, you will not get full-bisection bandwidth between instances in peered VPCs. Read more about Placement Groups.
+
+#### Q. Is Inter-Region VPC Peering traffic encrypted?
+
+Traffic is encrypted using modern AEAD (Authenticated Encryption with Associated Data) algorithms. Key agreement and key management is handled by AWS.
+
+#### Q. How do DNS translations work with Inter-Region VPC Peering?
+
+By default, a query for a public hostname of an instance in a peered VPC in a different region will resolve to a public IP address. Route 53 private DNS can be used to resolve to a private IP address with Inter-Region VPC Peering.
+
+#### Q. Can I reference security groups across an Inter-Region VPC Peering connection?
+
+No. Security groups cannot be referenced across an Inter-Region VPC Peering connection.
+
+#### Q. Does Inter-Region VPC Peering support with IPv6?
+
+No. Inter-Region VPC Peering does not support IPv6.
+
+#### Q. Can Inter-Region VPC Peering be used with EC2-Classic Link?
+
+No. Inter-Region VPC Peering cannot be used with EC2-ClassicLink.
+
+#### Q. Are there AWS Services that cannot be used over Inter-Region VPC Peering?
+
+Network Load Balancers, AWS PrivateLink and Elastic File System cannot be used over Inter-Region VPC Peering.
+
+#### Q. What is ClassicLink?
+
+Amazon Virtual Private Cloud (VPC) ClassicLink allows EC2 instances in the EC2-Classic platform to communicate with instances in a VPC using private IP addresses. To use ClassicLink, enable it for a VPC in your account, and associate a Security Group from that VPC with an instance in EC2-Classic. All the rules of your VPC Security Group will apply to communications between instances in EC2-Classic and instances in the VPC. 
+
+#### Q. What does ClassicLink cost?
+
+There is no additional charge for using ClassicLink; however, existing cross Availability Zone data transfer charges will apply. For more information, consult the EC2 pricing page.
+
+#### Q. How do I use ClassicLink?
+
+In order to use ClassicLink, you first need to enable at least one VPC in your account for ClassicLink. Then you associate a Security Group from the VPC with the desired EC2-Classic instance. The EC2-Classic instance is now linked to the VPC and is a member of the selected Security Group in the VPC. Your EC2-Classic instance cannot be linked to more than one VPC at the same time.
+
+#### Q. Does the EC2-Classic instance become a member of the VPC?
+
+The EC2-Classic instance does not become a member of the VPC. It becomes a member of the VPC Security Group that was associated with the instance. All the rules and references to the VPC Security Group apply to communication between instances in EC2-Classic instance and resources within the VPC.
+
+#### Q. Can I use EC2 public DNS hostnames from my EC2-Classic and EC2-VPC instances to address each other, in order to communicate using private IP?
+
+No. The EC2 public DNS hostname will not resolve to the private IP address of the EC2-VPC instance when queried from an EC2-Classic instance, and vice-versa.
+
+#### Q. Are there any VPCs for which I cannot enable ClassicLink?
+
+Yes. ClassicLink cannot be enabled for a VPC that has a Classless Inter-Domain Routing (CIDR) that is within the 10.0.0.0/8 range, with the exception of 10.0.0.0/16 and 10.1.0.0/16. In addition, ClassicLink cannot be enabled for any VPC that has a route table entry pointing to the 10.0.0.0/8 CIDR space to a target other than "local".
+
+#### Q. Can traffic from an EC2-Classic instance travel through the Amazon VPC and egress through the Internet gateway, virtual private gateway, or to peered VPCs?
+
+Traffic from an EC2-Classic instance can only be routed to private IP addresses within the VPC. They will not be routed to any destinations outside the VPC, including Internet gateway, virtual private gateway, or peered VPC destinations.
+
+#### Q. Does ClassicLink affect the access control between the EC2-Classic instance, and other instances that are in the EC2-Classic platform?
+
+ClassicLink does not change the access control defined for an EC2-Classic instance through its existing Security Groups from the EC2-Classic platform.
+
+#### Q. Will ClassicLink settings on my EC2-Classic instance persist through stop/start cycles?
+
+The ClassicLink connection will not persist through stop/start cycles of the EC2-Classic instance. The EC2-Classic instance will need to be linked back to a VPC after it is stopped and started. However, the ClassicLink connection will persist through instance reboot cycles.
+
+#### Q. Will my EC2-Classic instance be assigned a new, private IP address after I enable ClassicLink?
+
+There is no new private IP address assigned to the EC2-Classic instance. When you enable ClassicLink on an EC2-Classic instance, the instance retains and uses its existing private IP address to communication with resources in a VPC.
+
+#### Q: Does ClassicLink allow EC2-Classic Security Group rules to reference VPC Security Groups, or vice versa?
+
+ClassicLink does not allow EC2-Classic Security Group rules to reference VPC Security Groups, or vice versa.
+
+#### Q. What is AWS PrivateLink?
+
+AWS PrivateLink enables customers to access services hosted on AWS in a highly available and scalable manner, while keeping all the network traffic within the AWS network. Service users can use this to privately access services powered by PrivateLink from their Amazon Virtual Private Cloud (VPC) or their on-premises, without using public IPs, and without requiring the traffic to traverse across the Internet. Service owners can register their Network Load Balancers to PrivateLink services and provide the services to other AWS customers.
+
+#### Q. How can I use AWS PrivateLink?
+
+As a service user, you will need to create interface type VPC endpoints for services that are powered by PrivateLink. These service endpoints will appear as Elastic Network Interfaces (ENIs) with private IPs in your VPCs. Once these endpoints are created, any traffic destined to these IPs will get privately routed to the corresponding AWS services.
+
+As a service owner, you can onboard your service to AWS PrivateLink by establishing a Network Load Balancer (NLB) to front your service and create a PrivateLink service to register with the NLB. Your customers will be able to establish endpoints within their VPC to connect to your service after you whitelisted their accounts and IAM roles.
+
+#### Q. Which services are currently available on AWS PrivateLink?
+
+The following AWS services support this feature: Amazon Elastic Compute Cloud (EC2), Elastic Load Balancing (ELB), Kinesis Streams, Service Catalog, EC2 Systems Manager, and Amazon SNS. Many SaaS solutions support this feature as well. Please visit AWS Marketplace for more SaaS products powered by AWS PrivateLink.
+
+#### Q. Can I privately access services powered by AWS PrivateLink over AWS Direct Connect?
+
+Yes. The application in your on-premises can connect to the service endpoints in Amazon VPC over AWS Direct Connect. The service endpoints will automatically direct the traffic to AWS services powered by AWS PrivateLink.
+
+#### Q. What CloudWatch metrics are available for the interface-based VPC endpoint?
+
+Currently, no CloudWatch metric is available for the interface-based VPC endpoint.
+
+#### Q. Who pays the data transfer costs for the traffic going via the interface-based VPC endpoint?
+
+The concept of data transfer costs is similar to that of data transfer costs for EC2 instances. Since an interface-based VPC endpoint is an ENI in the subnet, data transfer charges depend on the source of the traffic. If the traffic to this interface is coming from a resource across AZ, EC2 cross-AZ data transfer charges apply to the consumer end. Customers in the consumer VPC can use AZ-specific DNS endpoint to make sure the traffic stays within the same AZ if they have provisioned each AZ available in their account.
+
+#### Q. What is the Bring Your Own IP feature?
+
+Bring Your Own IP (BYOIP) enables customers to move all or part of their existing publicly routable IPv4 address space to AWS for use with their AWS resources. Customers will continue to own the IP range, however, AWS will take over its advertisement on the internet. Customers can create Elastic IPs from the IP space they bring to AWS and use them with EC2 instances, NAT Gateways, and Network Load Balancers. Customers will continue to have access to Amazon-supplied IPs and can choose to use BYOIP Elastic IPs, Amazon-supplied IPs, or both.
+
+#### Q. Why should I use BYOIP?
+
+You may want to bring your own IP addresses to AWS for the following reasons:
+
+IP Reputation: Many customers consider the reputation of their IP addresses to be a strategic asset and want to use those IPs on AWS with their resources. For example, customers who maintain services such as outbound e-mail MTA and have high reputation IPs, can now bring over their IP space and successfully maintain their existing sending success rate.
+
+Customer whitelisting: BYOIP also enables customers to move workloads that rely on IP address whitelisting to AWS without the need to re-establish the whitelists with new IP addresses.
+
+Hardcoded dependencies: Several customers have IPs hardcoded in devices or have taken architectural dependencies on their IPs. BYOIP enables such customers hassle free migration to AWS.
+
+Regulation and compliance: Many customers are required to use certain IPs because of regulation and compliance reasons. They too are unlocked by BYOIP.
+
+#### Q. How can I use IP addresses from a BYOIP prefix with AWS resources?
+
+Your BYOIP prefix will show as an IP pool in your account. You can create Elastic IPs (EIPs) from the IP pool and use them like regular Elastic IPs (EIPs) with any AWS resource that supports EIPs. Currently, EC2 instances, NAT Gateways, and Network Load Balancers support EIPs.
+
+#### Q. What happens if I release a BYOIP Elastic IP?
+
+When you release a BYOIP Elastic IP it goes back to the BYOIP IP pool from which it was allocated.
+
+#### Q. In which AWS Regions is BYOIP available?
+
+The feature is currently available in the US-East (N.Virginia), US-East (Ohio), US-West (Oregon), EU (Dublin), EU (London), EU (Frankfurt), and Canada (Central) AWS Regions.
+
+#### Q. Can a BYOIP prefix be shared with multiple VPCs in the same account?
+
+Yes. You can use the BYOIP prefix with any number of VPCs in the same account.
+
+#### Q. How many IP ranges can I bring via BYOIP?
+
+You can bring a maximum of five IP ranges to your account.
+
+#### Q. What is the most specific prefix that I can bring via BYOIP?
+
+The most specific prefix you can bring via BYOIP is a /24 IPv4 prefix.
+
+#### Q. Which RIR prefixes can I use for BYOIP?
+
+You can use ARIN and RIPE registered prefixes.
+
+#### Q. Can I bring a reassigned or reallocated prefix?
+
+We are not accepting reassigned or reallocated prefixes at this time. IP ranges should be a net type of direct allocation or direct assignment.
+
+#### Q. Can I move a BYOIP prefix from one AWS Region to another?
+
+Yes. You can do that by de-provisioning the BYOIP prefix from the current region and then provisioning it to the new region.
+
+#### Q. Can I use the AWS Management Console to control and manage Amazon VPC?
+
+Yes. You can use the AWS Management Console to manage Amazon VPC objects such as VPCs, subnets, route tables, Internet gateways, and IPSec VPN connections. Additionally, you can use a simple wizard to create a VPC.
+
+#### Q. How many VPCs, subnets, Elastic IP addresses, and internet gateways can I create?
+
+You can have:
+
+Five Amazon VPCs per AWS account per region
+Two hundred subnets per Amazon VPC
+Five Amazon VPC Elastic IP addresses per AWS account per region
+One internet gateway per Amazon VPC
+See the Amazon VPC user guide for more information on VPC limits.
+
+#### Q. Can I obtain AWS support with Amazon VPC?
+
+Yes. Click here for more information on AWS support.
+
+#### Q. Can I use ElasticFox with Amazon VPC?
+
+ElasticFox is no longer officially supported for managing your Amazon VPC. Amazon VPC support is available via the AWS APIs, command line tools, and the AWS Management Console, as well as a variety of third-party utilities.
+
 ### IMP Links
 
 [AWS Free Account Fearures](https://aws.amazon.com/free/?all-free-tier.sort-by=item.additionalFields.SortRank&all-free-tier.sort-order=asc)
